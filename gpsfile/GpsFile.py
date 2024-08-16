@@ -1,25 +1,10 @@
 from pathlib import Path
 
 class GpsFile:
-    def __init__(self, in_path: str):
-        self.path = Path(in_path)
-        self.name: str = self.path.name
-        self.number_pts: int = 0
-
-        self.pts = []
-
-        self.load_pts_from_path()
-
-    def set_points(self, in_pts):
-        self.pts = in_points
-        self.number_pts = len(in_pts)
-
-    def get_points(self):
-        return self.pts
-
-    def load_pts_from_path(self):
-        with self.path.open() as file:
-            for line in file:
-                print(line)
-                vals = line.split(';')
-                self.pts.append((float(vals[0]), float(vals[1])))
+    def __init__(self, in_name: str, in_date, in_duration,
+                 in_distance, in_hash):
+        self.name = in_name
+        self.duration = in_duration
+        self.date = in_date
+        self.distance = in_distance
+        self.hash = in_hash

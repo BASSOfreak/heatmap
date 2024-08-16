@@ -1,1 +1,5 @@
-DBNAME = "db"
+DBNAME = 'db'
+BUF_SIZE = 65536
+INPUT_FILES_LOCATION = 'data/'
+TEMP_OUTPUT_FILES_LOCATION = 'temp_output/'
+DEBUG_MODE = True

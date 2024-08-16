@@ -1,10 +1,10 @@
 import folium
-from gpsfile.GpsFile import GpsFile
+from gpsfile.GpsFileWithPts import GpsFileWithPts
 
 def createMap():
     m = folium.Map(location=[52.527455650269985, 13.333634929731488], zoom_start=11)
 
-    gps_file = GpsFile('./file.txt')
+    gps_file = GpsFileWithPts('./file.txt')
 
     trail_coordinates = gps_file.get_points()
 

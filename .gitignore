@@ -1,2 +1,3 @@
 /heatmapvenv
 __pycache__/
+*.fit

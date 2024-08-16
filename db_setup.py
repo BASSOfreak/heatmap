@@ -8,6 +8,7 @@ cur.execute("""
     CREATE TABLE IF NOT EXISTS GPSFILES (
         id INTEGER PRIMARY KEY,
         name char(40) NOT NULL,
+        hash_of_file char(50) NOT NULL,
         date DATETIME NOT NULL,
         distance FLOAT NOT NULL,
         duration FLOAT NOT NULL,

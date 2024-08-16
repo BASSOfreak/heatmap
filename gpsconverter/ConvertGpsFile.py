@@ -4,10 +4,10 @@ from math import pi
 import fitdecode
 from pathlib import Path
 
-def convertFile():
+def convertFile(data_folder_in: str, file_name_in:str, output_folder_in: str):
     # load file
-    data_folder = "data/"
-    file_name = "2024-06-04-18-42-11.fit"
+    data_folder = data_folder_in
+    file_name = file_name_in
 
     output = []
 
@@ -16,12 +16,14 @@ def convertFile():
             output = parseFitFile(data_folder, file_name)
         case ".gpx":
             output = parseGpsFile(data_folder, file_name)
-
+        case _:
+            print("file type not supported")
+            return
     stack = np.stack(output)
     #print(stack)
     #print(stack[0,:] - stack[1,:])
 
-    file = open("file.txt", 'w')
+    file = open(output_folder_in + file_name, 'w')
     out_string = ""
     for line in stack:
         line_string = str(line[0]) + ";" + str(line[1]) + '\n'
@@ -41,7 +43,7 @@ def parseGpsFile(data_folder, file_name):
     # fetch all points from file
     for trkpt in tree.iter('{http://www.topografix.com/GPX/1/1}trkpt'):
         trkpt_vec = np.array([float(trkpt.get('lat')), float(trkpt.get('lon'))])
-        print(trkpt_vec)
+        #print(trkpt_vec)
         output.append(trkpt_vec)
         #counter = counter + 1
         if counter > 10:
@@ -61,9 +63,11 @@ def parseFitFile(data_folder, file_name):
                 #print('non_existent_field:', frame.get_value('non_existent_field', fallback='field not present'))
                 if frame.has_field('position_lat') and frame.has_field('position_long'):
                     #print("asda")
-                    print('latitude:', frame.get_value('position_lat') / ((2**32)/360))
-                    print('longitude:', frame.get_value('position_long') / ((2**32)/360))
-                    trkpt_vec = np.array([frame.get_value('position_lat') / ((2**32)/360), frame.get_value('position_long') / ((2**32)/360)])
+                    #print('latitude:', frame.get_value('position_lat') / ((2**32)/360))
+                    #print('longitude:', frame.get_value('position_long') / ((2**32)/360))
+                    trkpt_vec = np.array([frame.get_value('position_lat') /
+                            ((2**32)/360), frame.get_value('position_long') / 
+                            ((2**32)/360)])
                     output.append(trkpt_vec)
 
             if counter > 120:
