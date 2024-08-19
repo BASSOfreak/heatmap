@@ -1,4 +1,5 @@
 from gpsfile.GpsFile import GpsFile
+from pathlib import Path
 
 class GpsFileWithPts(GpsFile):
     def __init__(self, in_path: str):
@@ -17,7 +18,7 @@ class GpsFileWithPts(GpsFile):
         self.pts = in_points
 
     def set_points(self, in_pts):
-        self.pts = in_points
+        self.pts = in_pts
         self.number_pts = len(in_pts)
 
     def get_points(self):
