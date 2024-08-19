@@ -1,3 +1,4 @@
 /heatmapvenv
+/venv
 __pycache__/
 *.fit
