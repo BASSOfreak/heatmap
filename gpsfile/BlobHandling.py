@@ -1,5 +1,6 @@
 import gzip
 from gpsconverter.StringListConverter import convert_list_to_string
+from gpsconverter.StringListConverter import convert_string_to_list
 
 def convert_into_binary(file_path: str):
     with open(file_path, 'rb') as file:

@@ -1,5 +1,7 @@
 from gpsfile.GpsFileWithPts import GpsFileWithPts
 from gpsfile.BlobHandling import convert_into_binary
+from gpsfile.BlobHandling import create_points_from_blob
+from gpsfile.BlobHandling import create_blob_from_points
 import module_variables
 import sqlite3
 from gpsconverter.HashFile import hash_file
@@ -27,7 +29,7 @@ def insert_gps_file_from_path(file_path: str):
     cur = con.cursor()
     fname = 'fname'
     hash_of_file = hash_file(file_path)
-    res = cur.execute("""INSERT INTO GPSFILES (id, name, date, distance,
+    res = cur.execute("""INSERT INTO GPSFILES (name, date, distance,
         duration, file, hash_of_file) VALUES (NULL, ?,?,?,?,?, ?);""",\
         (fname, '01.01.2024', 10, 10, binary_blob, hash_of_file))
     con.commit()
@@ -45,8 +47,14 @@ def insert_gps_file(in_file: GpsFileWithPts):
 
 # order is: name, file, date, duration, distance, hash_of_file
 def create_gps_file_from_full_params(record_row):
-    gpsFile = GpsFileWithPts(record_row[0], record_row[1],record_row[2],record_row[3],
-                      record_row[4],record_row[5])
+    points = create_points_from_blob(record_row[1])
+    gpsFile = GpsFileWithPts(
+            record_row[0], # name 
+            points, # points
+            record_row[2], # date
+            record_row[3], # duration
+            record_row[4], # distance
+            record_row[5]) # hash
     return gpsFile
 
 def delete_all_files():
@@ -58,3 +66,4 @@ def delete_all_files():
         con.commit()
     else:
         print('not doing anything. bye.')
+
