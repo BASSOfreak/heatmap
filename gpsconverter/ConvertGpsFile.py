@@ -3,6 +3,7 @@ import numpy as np
 from math import pi
 import fitdecode
 from pathlib import Path
+from gpsconverter.StringListConverter import points
 
 def convertFile(data_folder_in: str, file_name_in:str, output_folder_in: str):
     # load file
@@ -29,8 +30,13 @@ def convertFile(data_folder_in: str, file_name_in:str, output_folder_in: str):
         line_string = str(line[0]) + ";" + str(line[1]) + '\n'
         out_string += line_string
 
-    file.write(out_string)
-    file.close()
+    GpsFileWithPoints(
+            file_name,
+            convert_string_to_list(out_string), 
+            date, 
+            duration,
+            distance, 
+            hash_value)
 
 def parseGpsFile(data_folder, file_name):
 
