@@ -3,7 +3,6 @@ import numpy as np
 from math import pi
 import fitdecode
 from pathlib import Path
-from gpsconverter.StringListConverter import points
 
 def convertFile(data_folder_in: str, file_name_in:str, output_folder_in: str):
     # load file
@@ -20,23 +19,7 @@ def convertFile(data_folder_in: str, file_name_in:str, output_folder_in: str):
         case _:
             print("file type not supported")
             return
-    stack = np.stack(output)
-    #print(stack)
-    #print(stack[0,:] - stack[1,:])
 
-    file = open(output_folder_in + file_name, 'w')
-    out_string = ""
-    for line in stack:
-        line_string = str(line[0]) + ";" + str(line[1]) + '\n'
-        out_string += line_string
-
-    GpsFileWithPoints(
-            file_name,
-            convert_string_to_list(out_string), 
-            date, 
-            duration,
-            distance, 
-            hash_value)
 
 def parseGpsFile(data_folder, file_name):
 
@@ -60,6 +43,8 @@ def parseGpsFile(data_folder, file_name):
 def parseFitFile(data_folder, file_name):
     counter = 0
     output = []
+    total_dist = 0
+    total_time = 0
     with fitdecode.FitReader(data_folder + file_name) as fit:
         for frame in fit:
             #counter = counter + 1
@@ -75,10 +60,28 @@ def parseFitFile(data_folder, file_name):
                             ((2**32)/360), frame.get_value('position_long') / 
                             ((2**32)/360)])
                     output.append(trkpt_vec)
+                
+                if frame.name == 'session':
+                    try:
+                        total_dist = frame.get_value('total_distance')
+                    except:
+                        pass
+                    try:
+                        total_time = frame.get_value('total_elapsed_time')
+                    except:
+                        pass 
+            #if counter > 120:
+            #    break
 
-            if counter > 120:
-                break
+    out_string = pts_list_to_string(output)
 
+    GpsFileWithPoints(
+            file_name,
+            convert_string_to_list(out_string), 
+            date, 
+            duration,
+            distance, 
+            hash_value)
     return output
 
 def get_direction(direction_vec):
@@ -99,7 +102,17 @@ def get_direction(direction_vec):
 
     return angle_val
 
+def pts_list_to_string(in_list):
 
+    stack = np.stack(in_list)
+
+    file = open(output_folder_in + file_name, 'w')
+    out_string = ""
+    for line in stack:
+        line_string = str(line[0]) + ";" + str(line[1]) + '\n'
+        out_string += line_string
+    
+    return out_string
 
 if __name__ == "__main__":
     convertGpsFile()

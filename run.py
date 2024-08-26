@@ -4,9 +4,23 @@ from db_connection.db_methods import *
 from gpsconverter.HashFile import hash_file
 from db_feeder import insert_files_into_db 
 
+# read file
+# show name
+# insert into db
+# get file from db
+# show name
+data_folder = 'data/'
+file_name = '2024-06-08-16-54-18.fit'
 
-import gzip
-exampleString = 'abcdefghijklm'
-compressed_value = gzip.compress(bytes(exampleString, 'utf-8'))
-plain_string_again = gzip.decompress(compressed_value).decode('utf-8')
-print(plain_string_again)
+import fitdecode
+
+with fitdecode.FitReader(data_folder + file_name) as fit:
+    for frame in fit:
+        if frame.frame_type == fitdecode.FIT_FRAME_DATA:
+            if frame.name == 'session':
+                try:
+                    print(frame.get_value('total_distance'))
+                except:
+                    print("no total distance")
+                print(frame.name)
+                print(frame.frame_type)
