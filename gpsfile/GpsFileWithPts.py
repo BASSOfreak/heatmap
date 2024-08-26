@@ -16,6 +16,7 @@ class GpsFileWithPts(GpsFile):
         super(GpsFileWithPts, self).__init__(in_name, in_date, in_duration,
                                          in_distance, in_hash)
         self.pts = in_points
+        self.number_pts = len(in_points)
 
     def set_points(self, in_pts):
         self.pts = in_pts
