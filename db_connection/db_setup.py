@@ -1,4 +1,5 @@
 import sqlite3
+import module_variables
 
 def setup_db(db_name: str):
     con = sqlite3.connect(db_name)
@@ -20,9 +21,14 @@ def setup_db(db_name: str):
 def clear_db(db_name: str):
     con = sqlite3.connect(db_name)
     cur = con.cursor()
-    cur.execute("""
-        DROP TABLE GPSFILES;
-        """)
-    con.commit()
-    con.close()
+    try:
+        cur.execute("""
+                DROP TABLE GPSFILES;
+                """)
+        con.commit()
+        con.close()
+    except sqlite3.OperationalError:
+        if(module_variables.DEBUG_MODE):
+            print("could not drop table GPSFILES")
+
 
