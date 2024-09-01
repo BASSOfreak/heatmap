@@ -53,6 +53,7 @@ def insert_gps_file(in_file: GpsFileWithPts, path_to_db: str):
 def create_gps_file_from_full_params(record_row):
     points = create_points_from_blob(record_row[1])
     print(record_row[2])
+    #date = 
     gpsFile = GpsFileWithPts(
             record_row[0], # name 
             points, # points

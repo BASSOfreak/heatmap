@@ -91,7 +91,7 @@ def parseFitFile(data_folder, file_name):
                     except:
                         pass 
                     try:
-                        timestamp = frame.get_value('timestamp')
+                        timestamp = frame.get_value('start_time')
                     except:
                         pass
             #if counter > 120:
@@ -102,8 +102,10 @@ def parseFitFile(data_folder, file_name):
     hash_value = hash_file(data_folder + file_name)
 
     # convert time string to datetime
-    timestamp = datetime.strptime('2024-08-21 17:57:45+00:00'.split('+')[0], 
-                                  '%Y-%m-%d %H:%M:%S')
+    print('timestamp: ' + str(timestamp))
+    print('total_time: ' + str(total_time))
+    #timestamp_datetime = datetime.strptime(timestamp.split('+')[0], 
+    #                              '%Y-%m-%dT%H:%M:%S')
 
     gpsFile = GpsFileWithPts(
             file_name,
