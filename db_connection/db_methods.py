@@ -4,6 +4,7 @@ from gpsfile.BlobHandling import create_points_from_blob
 from gpsfile.BlobHandling import create_blob_from_points
 import sqlite3
 from gpsconverter.HashFile import hash_file
+from datetime import datetime
 
 def print_all_files(path_to_db: str):
     con = sqlite3.connect(path_to_db)
@@ -52,12 +53,15 @@ def insert_gps_file(in_file: GpsFileWithPts, path_to_db: str):
 # order is: name, file, date, duration, distance, hash_of_file
 def create_gps_file_from_full_params(record_row):
     points = create_points_from_blob(record_row[1])
-    print(record_row[2])
-    #date = 
+    # print("datetime value from db: " + record_row[2])
+    # timestamp value from db
+    timestamp_output = record_row[2]
+    timestamp = datetime.strptime(timestamp_output.split('+')[0], 
+            '%Y-%m-%d %H:%M:%S')
     gpsFile = GpsFileWithPts(
             record_row[0], # name 
             points, # points
-            record_row[2], # date
+            timestamp, # date
             record_row[3], # duration
             record_row[4], # distance
             record_row[5]) # hash

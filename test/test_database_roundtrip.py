@@ -28,7 +28,9 @@ class Test_DataBase_Roundtrip(unittest.TestCase):
                 module_variables.TESTDBNAME)
         # compare values
         self.assertEqual(gpsfile_in.name, gps_file_out.name)
-        
+        self.assertEqual(gpsfile_in.date, gps_file_out.date)
         self.assertListEqual(
                 gpsfile_in.get_points(), gps_file_out.get_points())
+        self.assertEqual(gpsfile_in.hash, gps_file_out.hash)
+        self.assertEqual(gpsfile_in.distance, gps_file_out.distance)
         

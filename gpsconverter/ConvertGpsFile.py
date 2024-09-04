@@ -6,7 +6,6 @@ from pathlib import Path
 from gpsconverter.HashFile import hash_file
 from gpsconverter.StringListConverter import convert_string_to_list
 from gpsfile.GpsFileWithPts import GpsFileWithPts
-from datetime import datetime
 
 def convertFile(data_folder_in: str, file_name_in:str):
     # load file
@@ -92,6 +91,7 @@ def parseFitFile(data_folder, file_name):
                         pass 
                     try:
                         timestamp = frame.get_value('start_time')
+                        timestamp = timestamp.replace(tzinfo=None)
                     except:
                         pass
             #if counter > 120:
