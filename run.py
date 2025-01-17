@@ -6,9 +6,11 @@ from db_connection.db_methods import (
 )
 from db_connection.db_setup import clear_db, setup_db
 from db_feeder import insert_files_into_db
+from plotting.MapPlot import createMap
 import module_variables
 
 #clear_db(module_variables.DBNAME)
 #setup_db(module_variables.DBNAME)
-#print_all_files(module_variables.DBNAME)
-insert_files_into_db()
+#insert_files_into_db()
+createMap()
+

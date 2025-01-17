@@ -6,13 +6,22 @@ import sqlite3
 from gpsconverter.HashFile import hash_file
 from datetime import datetime
 
-def print_all_files(path_to_db: str):
+def get_all_files_in_db(path_to_db: str) -> list:
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()
     res = cur.execute('SELECT name FROM GPSFILES;')
     record = res.fetchall()
+    output = []
     for row in record:
-        print(row[0])
+        output.append(row[0])
+
+    return output
+
+def print_all_files(path_to_db: str):
+    all_files = get_all_files_in_db(path_to_db)
+    for name in all_files:
+        print(name)
+    
 
 def get_gps_file_by_name(name: str, path_to_db: str) -> GpsFileWithPts:
     con = sqlite3.connect(path_to_db)
