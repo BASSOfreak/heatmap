@@ -1,6 +1,6 @@
 import unittest
 
-from db_connection.db_methods import get_gps_file_by_name, insert_gps_file
+from db_connection.db_methods import get_gps_file_by_name, insert_gps_file, check_if_in_db
 from db_connection.db_setup import clear_db, setup_db
 from gpsconverter.ConvertGpsFile import parseFitFile
 import module_variables
@@ -14,7 +14,6 @@ class Test_DataBase_Roundtrip(unittest.TestCase):
         clear_db(module_variables.TESTDBNAME)
     
     def test1(self):
-        
         # read file
         data_folder = 'test/test_data'
         file_name = 'Corsa_pomeridiana.fit'
@@ -34,3 +33,14 @@ class Test_DataBase_Roundtrip(unittest.TestCase):
         self.assertEqual(gpsfile_in.hash, gps_file_out.hash)
         self.assertEqual(gpsfile_in.distance, gps_file_out.distance)
         
+    def test_file_exists_in_db(self):
+        # read file
+        data_folder = 'test/test_data'
+        file_name = 'Corsa_pomeridiana.fit'
+        gpsfile_in = parseFitFile(data_folder, file_name)
+
+        insert_gps_file(gpsfile_in, module_variables.TESTDBNAME)
+
+        self.assertTrue(check_if_in_db(module_variables.TESTDBNAME, "Corsa_pomeridiana.fit"))
+        self.assertFalse(check_if_in_db(module_variables.TESTDBNAME, "Corsa_pomeridianaasdasd.fit"))
+        self.assertFalse(check_if_in_db(module_variables.TESTDBNAME, ""))

@@ -22,6 +22,15 @@ def print_all_files(path_to_db: str):
     for name in all_files:
         print(name)
     
+def check_if_in_db(path_to_db: str, file_name: str) -> bool:
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+    res = cur.execute(f"""SELECT EXISTS (SELECT 1 FROM GPSFILES WHERE name = \'{file_name}\');""")
+    val = res.fetchone()
+    if val[0] == 1:
+        return True
+    else:
+        return False
 
 def get_gps_file_by_name(name: str, path_to_db: str) -> GpsFileWithPts:
     con = sqlite3.connect(path_to_db)
