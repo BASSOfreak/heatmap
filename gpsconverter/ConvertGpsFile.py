@@ -1,18 +1,18 @@
 import xml.etree.ElementTree as ET
 import numpy as np
-from math import pi
 import fitdecode
 from pathlib import Path
 from gpsconverter.HashFile import hash_file
 from gpsconverter.StringListConverter import convert_string_to_list
 from gpsfile.GpsFileWithPts import GpsFileWithPts
 
-def convertFile(data_folder_in: str, file_name_in:str):
+def convertFile(data_folder_in: str, file_name_in:str) -> GpsFileWithPts:
     # load file
     data_folder = data_folder_in
     file_name = file_name_in
 
-    
+    if data_folder[-1] != '/':
+        data_folder = data_folder + '/'
 
     match Path(file_name).suffix:
         case ".fit":
@@ -25,7 +25,7 @@ def convertFile(data_folder_in: str, file_name_in:str):
         
 
 
-def parseGpsFile(data_folder, file_name):
+def parseGpsFile(data_folder, file_name) -> GpsFileWithPts:
 
     data = open(data_folder + file_name).read()
     tree = ET.fromstring(data)
@@ -56,10 +56,7 @@ def parseGpsFile(data_folder, file_name):
     
     return gpsFile
 
-def parseFitFile(data_folder, file_name):
-    if data_folder[-1] != '/':
-        data_folder = data_folder + '/'
-
+def parseFitFile(data_folder, file_name) -> GpsFileWithPts:
     counter = 0
     output = []
     total_dist = 0
@@ -116,24 +113,6 @@ def parseFitFile(data_folder, file_name):
             hash_value)
     
     return gpsFile
-
-def get_direction(direction_vec):
-    if direction_vec[0] == 0:
-        if direction_vec[1] > 0:
-            # north
-            return 0
-        else:
-            return pi
-    # negative value so it turns clockwise
-    angle_val = -1 * np.arctan(direction_vec[1]/direction_vec[0])
-    # add pi if in left quadrant
-    if direction_vec[0] < 0:
-        angle_val = angle_val + pi
-
-    # add pi/2 so lowest value = 0
-    angle_val = angle_val + pi / 2
-
-    return angle_val
 
 def pts_list_to_string(in_list):
     stack = np.stack(in_list)

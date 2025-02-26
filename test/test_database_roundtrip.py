@@ -15,7 +15,7 @@ class Test_DataBase_Roundtrip(unittest.TestCase):
     
     def test1(self):
         # read file
-        data_folder = 'test/test_data'
+        data_folder = 'test/test_data/'
         file_name = 'Corsa_pomeridiana.fit'
         gpsfile_in = parseFitFile(data_folder, file_name)
         # show name
@@ -35,7 +35,7 @@ class Test_DataBase_Roundtrip(unittest.TestCase):
         
     def test_file_exists_in_db(self):
         # read file
-        data_folder = 'test/test_data'
+        data_folder = 'test/test_data/'
         file_name = 'Corsa_pomeridiana.fit'
         gpsfile_in = parseFitFile(data_folder, file_name)
 

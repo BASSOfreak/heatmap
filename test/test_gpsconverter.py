@@ -3,9 +3,9 @@ import numpy as np
 from math import pi
 from module_variables import *
 
-from gpsconverter.ConvertGpsFile import get_direction
-class Test_GpsConverter(unittest.TestCase):
-    def test1(self):
+from gpsconverter.DirectionHandling import get_direction
+class Test_DirectionHandling(unittest.TestCase):
+    def testDirections(self):
         # north
         north = np.array([0,1])
         direction = get_direction(north)
@@ -41,3 +41,15 @@ class Test_GpsConverter(unittest.TestCase):
         direction = get_direction(southwest)
         if DEBUG_MODE: print(direction)
         self.assertTrue(abs(direction - (pi + pi/4)) < 0.01)
+
+    @unittest.skip("not yet implemented")
+    def testStraightLine(self):
+        a = [[1,0],[2,0],[3,0],[4,0],[5,0]]
+        res = []
+        self.assertListEqual(res, [[1,0],[5,0]])
+
+    @unittest.skip("not yet implemented")
+    def testRightTurn(self):
+        a = [[1,0],[2,0],[3,0],[3,1],[3,2]]
+        res = []
+        self.assertListEqual(res, [[1,0],[3,0],[3,2]])

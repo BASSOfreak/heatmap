@@ -11,10 +11,10 @@ def write_blob_to_file(blob, file_path):
     with open(file_path, 'wb') as file:
         file.write(blob)
 
-def create_blob_from_points(in_points):
+def create_blob_from_points(in_points) -> bytes:
     points_as_string = convert_list_to_string(in_points)
     return gzip.compress(bytes(points_as_string, 'utf-8'))
 
-def create_points_from_blob(in_blob):
+def create_points_from_blob(in_blob: bytes) -> list:
     points_as_string = gzip.decompress(in_blob).decode('utf-8')
     return convert_string_to_list(points_as_string) 
