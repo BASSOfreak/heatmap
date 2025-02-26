@@ -15,7 +15,7 @@ def add_points_to_map(map: folium.Map):
     for file_name in list_of_all_file_names:
         gps_file = get_gps_file_by_name(file_name, module_variables.DBNAME)
         trail_coordinates = gps_file.get_points()
-        folium.PolyLine(trail_coordinates, tooltip="Coast").add_to(map)
+        folium.PolyLine(trail_coordinates, gps_file.name).add_to(map)
 
 if __name__ == "__main__":
     createMap()
