@@ -95,3 +95,13 @@ def delete_all_files(path_to_db: str):
     else:
         print('not doing anything. bye.')
 
+def get_all_files_in_db_filtered(path_to_db: str, start_date = "0", end_date="now") -> list:
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+    res = cur.execute(f"SELECT name FROM GPSFILES WHERE date > \'{start_date}\' and date < \'{end_date}\';")
+    record = res.fetchall()
+    output = []
+    for row in record:
+        output.append(row[0])
+
+    return output
